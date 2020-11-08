@@ -4,8 +4,25 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+bandit = "*"
+black = "*"
+ipython = "*"
+isort = "*"
+mypy = "*"
+pylint = "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-xdist = "*"
+radon = "*"
+tox = "*"
+versioneer = "*"
 
 [packages]
+aiokafka = "*"
+apscheduler = "*"
+asyncpg = "*"
+cachetools = "*"
+uvloop = "*"
 
 [requires]
 python_version = "3.8"
