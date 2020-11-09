@@ -21,7 +21,7 @@ class LoggerMixin:  # pylint: disable=too-few-public-methods
         name = ".".join(
             [
                 self.__module__,
-                self.__class__.___name__,
+                self.__class__.__name__,
             ]
         )
         return logging.getLogger(name)
