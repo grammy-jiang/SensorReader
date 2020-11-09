@@ -20,10 +20,11 @@ class LoggerMixinTest(TestCase):
     Test case for LoggerMixin
     """
 
-    def setUp(self):
+    def setUp(self) -> None:
         """
 
         :return:
+        :rtype: None
         """
         self.test_class = TestClass()
 
@@ -31,13 +32,15 @@ class LoggerMixinTest(TestCase):
         """
 
         :return:
+        :rtype: None
         """
         del self.test_class
 
-    def test_logger_mixin(self):
+    def test_logger_mixin(self) -> None:
         """
 
         :return:
+        :rtype: None
         """
         self.assertTrue(hasattr(self.test_class, "logger"))
 
