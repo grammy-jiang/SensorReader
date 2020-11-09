@@ -1,3 +1,6 @@
+"""
+setup.py for Sensor Reader
+"""
 from setuptools import setup
 
 import versioneer
