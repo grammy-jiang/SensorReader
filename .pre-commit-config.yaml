@@ -10,6 +10,20 @@ repos:
       - id: check-added-large-files
   - repo: local
     hooks:
+      - id: isort
+        name: isort
+        language: system
+        entry: isort
+        types:
+          - python
+        exclude: (^versioneer\.py$)|(sensor_reader\/_version\.py$)
+      - id: black
+        name: black
+        language: system
+        entry: black
+        types:
+          - python
+        exclude: (^versioneer\.py$)|(sensor_reader\/_version\.py$)
       - id: pylint
         name: pylint
         language: system
