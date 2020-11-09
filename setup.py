@@ -27,5 +27,9 @@ setup(
         "uvloop",
     ],
     python_requires=">=3.8",
-    entry_points={"console_scripts": ["sensor_reader=sensor_reader.cli::main"]},
+    entry_points={
+        "console_scripts": [
+            "sensor_reader=sensor_reader.cli:main",
+        ],
+    },
 )
