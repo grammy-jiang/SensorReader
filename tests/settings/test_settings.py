@@ -1,7 +1,7 @@
 """
 Test BaseSettings class
 """
-
+import logging
 from collections.abc import Iterable
 from types import ModuleType
 from unittest.case import TestCase
@@ -169,6 +169,19 @@ class SettingsTest(TestCase):
         self.assertEqual(
             settings._data["A"],  # pylint: disable = protected-access
             Setting(priority="project", priority_value=20, value=1),
+        )
+
+        settings = Settings()
+        settings_: Settings
+        with settings.unfreeze() as settings_:
+            settings_.load_module(  # pylint: disable=no-member
+                "sensor_reader.settings.default"
+            )
+
+        self.assertIn("LOG_LEVEL", settings)
+        self.assertEqual(
+            settings._data["LOG_LEVEL"],  # pylint: disable = protected-access
+            Setting(priority="project", priority_value=20, value=logging.INFO),
         )
 
     def test_copy_to_dict(self):

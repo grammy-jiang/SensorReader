@@ -9,7 +9,7 @@ from collections.abc import MutableMapping
 from contextlib import contextmanager
 from importlib import import_module
 from types import ModuleType
-from typing import Any, Dict, Generator, Iterator, Mapping
+from typing import Any, Dict, Generator, Iterator, Mapping, Union
 
 from sensor_reader.exceptions import (
     SettingsFrozenException,
@@ -169,11 +169,11 @@ class Settings(BaseSettings):  # pylint: disable=too-many-ancestors
     settings class
     """
 
-    def load_module(self, module: ModuleType) -> None:
+    def load_module(self, module: Union[ModuleType, str]) -> None:
         """
 
         :param module:
-        :type module: ModuleType
+        :type module: Union[ModuleType, str]
         :return:
         :rtype: None
         """
