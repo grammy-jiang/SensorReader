@@ -7,6 +7,8 @@ from __future__ import annotations
 from collections import namedtuple
 from collections.abc import MutableMapping
 from contextlib import contextmanager
+from importlib import import_module
+from types import ModuleType
 from typing import Any, Dict, Generator, Iterator, Mapping
 
 from sensor_reader.exceptions import (
@@ -160,3 +162,32 @@ class BaseSettings(MutableMapping):
         :rtype: bool
         """
         return k in self._data
+
+
+class Settings(BaseSettings):  # pylint: disable=too-many-ancestors
+    """
+    settings class
+    """
+
+    def load_module(self, module: ModuleType) -> None:
+        """
+
+        :param module:
+        :type module: ModuleType
+        :return:
+        :rtype: None
+        """
+        if isinstance(module, str):
+            module = import_module(module)
+
+        for key in dir(module):
+            if key.isupper():
+                self[key] = getattr(module, key)
+
+    def copy_to_dict(self) -> Dict[str, Any]:
+        """
+
+        :return:
+        :rtype: Dict[str, Any]
+        """
+        return dict(self.items())

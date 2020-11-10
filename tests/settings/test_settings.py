@@ -3,13 +3,14 @@ Test BaseSettings class
 """
 
 from collections.abc import Iterable
+from types import ModuleType
 from unittest.case import TestCase
 
 from sensor_reader.exceptions import (
     SettingsFrozenException,
     SettingsLowPriorityException,
 )
-from sensor_reader.settings import BaseSettings, Setting
+from sensor_reader.settings import BaseSettings, Setting, Settings
 
 
 class BaseSettingsTest(TestCase):
@@ -144,3 +145,37 @@ class BaseSettingsTest(TestCase):
         settings = BaseSettings(settings={"a": 1, "b": 2})
         self.assertTrue("a" in settings)
         self.assertFalse("c" in settings)
+
+
+class SettingsTest(TestCase):
+    """
+    test Settings class
+    """
+
+    def test_update_from_module(self):
+        """
+        test the method of update_from_module
+        :return:
+        """
+        test_module = ModuleType(name="test")
+        setattr(test_module, "A", 1)
+
+        settings = Settings()
+        settings_: Settings
+        with settings.unfreeze() as settings_:
+            settings_.load_module(test_module)  # pylint: disable=no-member
+
+        self.assertIn("A", settings)
+        self.assertEqual(
+            settings._data["A"],  # pylint: disable = protected-access
+            Setting(priority="project", priority_value=20, value=1),
+        )
+
+    def test_copy_to_dict(self):
+        """
+
+        :return:
+        """
+        settings = Settings({"A": 1, "B": 2})
+
+        self.assertDictEqual(settings.copy_to_dict(), {"A": 1, "B": 2})
