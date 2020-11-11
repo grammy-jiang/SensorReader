@@ -189,6 +189,6 @@ class SettingsTest(TestCase):
 
         :return:
         """
-        settings = Settings({"A": 1, "B": 2})
+        settings = Settings(settings={"A": 1, "B": 2}, load_default=False)
 
         self.assertDictEqual(settings.copy_to_dict(), {"A": 1, "B": 2})

@@ -169,6 +169,29 @@ class Settings(BaseSettings):  # pylint: disable=too-many-ancestors
     settings class
     """
 
+    def __init__(
+        self,
+        settings: Mapping = None,
+        priority: str = "project",
+        load_default: bool = True,
+    ):
+        """
+
+        :param settings:
+        :type settings: Mapping
+        :param priority:
+        :type priority: str
+        :param load_default:
+        :type load_default: bool
+        """
+        super().__init__(settings, priority)
+
+        if load_default:
+            with self.unfreeze(priority="default") as settings_:
+                settings_.load_module(  # pylint: disable=no-member
+                    "sensor_reader.settings.default"
+                )
+
     def load_module(self, module: Union[ModuleType, str]) -> None:
         """
 
