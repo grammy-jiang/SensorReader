@@ -3,9 +3,20 @@ Logging related utilities
 """
 
 import logging
+import platform
+import pprint
+import ssl
 from functools import cached_property
 
+import aiokafka
+import apscheduler
+import asyncpg
+import cachetools
+import uvloop
+
 from sensor_reader.settings import Settings
+
+logger = logging.getLogger(__name__)
 
 
 class LoggerMixin:  # pylint: disable=too-few-public-methods
@@ -49,3 +60,54 @@ def configure_logging(settings: Settings) -> None:
 
     # add this console handler into logging
     logging.root.addHandler(console_handler)
+
+
+def get_runtime_info() -> None:
+    """
+    log the runtime environment info
+    :return:
+    :rtype: None
+    """
+    logger.info(
+        "Platform: %(platform)s", {"platform": pprint.pformat(platform.platform())}
+    )
+
+    logger.info(
+        "Platform details:\n%(details)s",
+        {
+            "details": pprint.pformat(
+                {
+                    "OpenSSL": ssl.OPENSSL_VERSION,
+                    "architecture": platform.architecture(),
+                    "machine": platform.machine(),
+                    "node": platform.node(),
+                    "processor": platform.processor(),
+                    "python_build": platform.python_build(),
+                    "python_compiler": platform.python_compiler(),
+                    "python_branch": platform.python_branch(),
+                    "python_implementation": platform.python_implementation(),
+                    "python_revision": platform.python_revision(),
+                    "python_version": platform.python_version(),
+                    "release": platform.release(),
+                    "system": platform.system(),
+                    "version": platform.version(),
+                }
+            )
+        },
+    )
+
+    logger.info(
+        "Versions:\n%(versions)s",
+        {
+            "versions": pprint.pformat(
+                {
+                    "Python": platform.python_version(),
+                    "aiokafka": aiokafka.__version__,
+                    "apscheduler": apscheduler.__version__,
+                    "asyncpg": asyncpg.__version__,
+                    "cachetools": cachetools.__version__,
+                    "uvloop": uvloop.__version__,
+                }
+            )
+        },
+    )

@@ -7,7 +7,7 @@ from unittest import TestCase
 from unittest.mock import MagicMock, patch
 
 from sensor_reader.settings import Settings
-from sensor_reader.utils.log import LoggerMixin, configure_logging
+from sensor_reader.utils.log import LoggerMixin, configure_logging, get_runtime_info
 
 
 class TestClass(LoggerMixin):  # pylint: disable=too-few-public-methods
@@ -96,4 +96,21 @@ class FunctionsTest(TestCase):
         self.assertEqual(
             handler.formatter._fmt,  # pylint: disable=protected-access
             "%(asctime)s [%(name)s] %(levelname)s: %(message)s",
+        )
+
+    def test_get_runtime_info(self):
+        """
+
+        :return:
+        """
+        with self.assertLogs("sensor_reader.utils.log", level=logging.INFO) as logs_cm:
+            get_runtime_info()
+
+        self.assertSequenceEqual(
+            [x.msg for x in logs_cm.records],
+            [
+                "Platform: %(platform)s",
+                "Platform details:\n%(details)s",
+                "Versions:\n%(versions)s",
+            ],
         )
