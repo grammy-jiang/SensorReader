@@ -6,9 +6,10 @@ from argparse import Action, ArgumentParser, Namespace
 from typing import Dict
 
 import sensor_reader
+from sensor_reader.settings import Settings
+from sensor_reader.utils import configure_logging, get_runtime_info
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("main")
+logger = None  # pylint: disable=invalid-name
 
 
 class SettingsAppend(Action):  # pylint: disable=too-few-public-methods
@@ -67,6 +68,23 @@ def get_arguments(*args) -> Namespace:
     )
 
     return parser.parse_args(args)
+
+
+def set_logging(settings: Settings) -> None:
+    """
+
+    :param settings:
+    :type settings: Settings
+    :return:
+    :rtype: None
+    """
+    configure_logging(settings)
+
+    global logger  # pylint: disable=global-statement,invalid-name
+    logger = logging.getLogger("sensor_reader")
+    logger.setLevel(settings["LOG_LEVEL"])
+
+    get_runtime_info()
 
 
 def main():
