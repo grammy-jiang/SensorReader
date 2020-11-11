@@ -21,7 +21,7 @@ class LoopTest(TestCase):
 
         :return:
         """
-        settings = Settings({"LOOP": "asyncio"})
+        settings = Settings({"LOOP": "asyncio"}, load_default=False)
 
         configure_event_loop(settings)
 
