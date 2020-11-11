@@ -2,12 +2,17 @@
 Entrypoint
 """
 import logging
+import sys
 from argparse import Action, ArgumentParser, Namespace
 from typing import Dict
 
 import sensor_reader
 from sensor_reader.settings import Settings
-from sensor_reader.utils import configure_logging, get_runtime_info
+from sensor_reader.utils import (
+    configure_event_loop,
+    configure_logging,
+    get_runtime_info,
+)
 
 logger = None  # pylint: disable=invalid-name
 
@@ -92,3 +97,8 @@ def main():
 
     :return:
     """
+    args: Namespace = get_arguments(*sys.argv[1:])
+
+    settings = Settings(settings=args.settings)
+    set_logging(settings)
+    configure_event_loop(settings)
