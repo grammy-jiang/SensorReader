@@ -14,8 +14,6 @@ from sensor_reader.utils import (
     get_runtime_info,
 )
 
-logger = None  # pylint: disable=invalid-name
-
 
 class SettingsAppend(Action):  # pylint: disable=too-few-public-methods
     """
@@ -85,11 +83,10 @@ def set_logging(settings: Settings) -> None:
     """
     configure_logging(settings)
 
-    global logger  # pylint: disable=global-statement,invalid-name
     logger = logging.getLogger("sensor_reader")
     logger.setLevel(settings["LOG_LEVEL"])
 
-    get_runtime_info()
+    get_runtime_info(logger)
 
 
 def main():
