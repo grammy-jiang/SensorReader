@@ -104,8 +104,9 @@ class FunctionsTest(TestCase):
 
         :return:
         """
-        with self.assertLogs("sensor_reader.utils.log", level=logging.INFO) as logs_cm:
-            get_runtime_info()
+        logger = logging.getLogger("test")
+        with self.assertLogs("test", level=logging.INFO) as logs_cm:
+            get_runtime_info(logger)
 
         self.assertSequenceEqual(
             [x.msg for x in logs_cm.records],

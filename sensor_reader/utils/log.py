@@ -16,8 +16,6 @@ import uvloop
 
 from sensor_reader.settings import Settings
 
-logger = logging.getLogger(__name__)
-
 
 class LoggerMixin:  # pylint: disable=too-few-public-methods
     """
@@ -62,9 +60,11 @@ def configure_logging(settings: Settings) -> None:
     logging.root.addHandler(console_handler)
 
 
-def get_runtime_info() -> None:
+def get_runtime_info(logger) -> None:
     """
-    log the runtime environment info
+
+    :param logger:
+    :type logger: logging.Logger
     :return:
     :rtype: None
     """
