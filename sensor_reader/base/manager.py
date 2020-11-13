@@ -2,7 +2,7 @@
 Base Manager Class for extensions and middlewares
 """
 from functools import cached_property
-from typing import Dict, Optional
+from typing import Dict
 
 from sensor_reader.settings import Settings
 from sensor_reader.utils import load_object
@@ -15,9 +15,10 @@ class ManagerMixin:  # pylint: disable=too-few-public-methods
     Base Manager Class for extensions and middlewares
     """
 
-    manage: Optional[str] = None
+    manage: str
     settings: Settings
     service: BaseService
+    _components_: Dict[str, object]
 
     @cached_property
     def _cls_components(self) -> Dict[str, int]:
@@ -28,10 +29,21 @@ class ManagerMixin:  # pylint: disable=too-few-public-methods
         """
         return dict(
             sorted(
-                self.settings[self.manage].items(),  # type: ignore
+                self.settings[self.manage].items(),
                 key=lambda items: items[1],
             )
         )
+
+    def _initialize_components(self) -> None:
+        """
+
+        :return:
+        :rtype: None
+        """
+        self._components_: Dict[str, object] = {
+            cls.__name__: cls.from_service(self.service)
+            for cls in (load_object(cls) for cls in self._cls_components.keys())
+        }
 
     @cached_property
     def _components(self) -> Dict[str, object]:
@@ -40,7 +52,6 @@ class ManagerMixin:  # pylint: disable=too-few-public-methods
         :return:
         :rtype: Dict[str, object]
         """
-        return {
-            cls.__name__: cls.from_service(self.service)  # type: ignore
-            for cls in (load_object(cls) for cls in self._cls_components.keys())
-        }
+        if not self._components_:
+            self._initialize_components()
+        return self._components_

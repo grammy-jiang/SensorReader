@@ -29,9 +29,27 @@ class ExtensionManager(ManagerMixin, BaseComponent):
         """
         super().__init__(service, name, setting_prefix)
 
+        self._initialize_components()
+
         self.logger.info(
             "Enabled extensions: \n%s", pprint.pformat(self.cls_extensions)
         )
+
+    @classmethod
+    def from_service(cls, service, name: str = None, setting_prefix: str = None):
+        """
+        Initialize components from a service instance
+        :param service:
+        :type service:
+        :param name:
+        :type name: str
+        :param setting_prefix:
+        :type setting_prefix: str
+        :return:
+        """
+        obj = cls(service, name, setting_prefix)
+
+        return obj
 
     @cached_property
     def cls_extensions(self) -> Dict[str, int]:
@@ -50,3 +68,13 @@ class ExtensionManager(ManagerMixin, BaseComponent):
         :rtype: Dict[str, object]
         """
         return self._components
+
+    def get_extension(self, name: str) -> object:
+        """
+        Get an extension by its name
+        :param name:
+        :type name: str
+        :return:
+        :rtype: object
+        """
+        return self.extensions[name]
