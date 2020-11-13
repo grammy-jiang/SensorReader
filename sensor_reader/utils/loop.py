@@ -4,7 +4,8 @@ Create a singleton object for asyncio loop
 import asyncio
 
 from sensor_reader.settings import Settings
-from sensor_reader.utils.misc import load_object
+
+from .misc import load_object
 
 
 def configure_event_loop(
