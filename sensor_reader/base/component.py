@@ -3,7 +3,7 @@ Base Class for Components
 """
 from typing import Any, Dict, Optional
 
-from sensor_reader.signals import Signal, components_start, components_stop
+from sensor_reader.signals import Signal, component_start, component_stop
 from sensor_reader.utils import LoggerMixin
 
 
@@ -60,8 +60,8 @@ class BaseComponent(LoggerMixin):
 
         signal_manager = service.signal_manager
 
-        signal_manager.connect(obj.start, components_start)
-        signal_manager.connect(obj.stop, components_stop)
+        signal_manager.connect(obj.start, component_start)
+        signal_manager.connect(obj.stop, component_stop)
 
         return obj
 

@@ -28,8 +28,8 @@ class Signal:
         return self.name
 
 
-components_start = Signal("component_start")
-components_stop = Signal("component_stop")
+component_start = Signal("component_start")
+component_stop = Signal("component_stop")
 
 service_start = Signal("service_start")
 service_stop = Signal("service_stop")
@@ -37,8 +37,8 @@ service_stop = Signal("service_stop")
 __all__ = [
     "Signal",
     "SignalManager",
-    "components_start",
-    "components_stop",
+    "component_start",
+    "component_stop",
     "service_start",
     "service_stop",
 ]
