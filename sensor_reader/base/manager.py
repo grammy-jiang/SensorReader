@@ -41,6 +41,6 @@ class ManagerMixin:  # pylint: disable=too-few-public-methods
         :rtype: Dict[str, object]
         """
         return {
-            cls.name: cls.from_service(self.service)  # type: ignore
+            cls.__name__: cls.from_service(self.service)  # type: ignore
             for cls in (load_object(cls) for cls in self._cls_components.keys())
         }
