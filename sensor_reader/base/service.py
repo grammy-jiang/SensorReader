@@ -46,6 +46,7 @@ class BaseService(LoggerMixin):
         :rtype None
         """
         self.loop.run_forever()
+        self.loop.close()
 
     async def stop(self, signal=None) -> None:  # pylint: disable=unused-argument
         """
