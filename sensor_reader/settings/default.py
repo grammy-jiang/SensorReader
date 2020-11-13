@@ -3,6 +3,7 @@ Default settings
 """
 
 import logging
+from typing import Dict
 
 # ==== LOG CONFIGURATION ======================================================
 
@@ -17,3 +18,7 @@ LOOP = "uvloop"
 CLS_SERVICE = "sensor_reader.services.SensorReader"
 
 CLS_SIGNAL_MANAGER = "sensor_reader.signals.SignalManager"
+
+CLS_EXTENSION_MANAGER = "sensor_reader.extensions.ExtensionManager"
+
+EXTENSIONS: Dict[str, int] = {}
