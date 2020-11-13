@@ -4,7 +4,7 @@ Sensor Reader
 
 from sensor_reader.base import BaseService
 from sensor_reader.settings import Settings
-from sensor_reader.signals import SignalManager
+from sensor_reader.signals import SignalManager, service_stop
 from sensor_reader.utils import load_object
 
 
@@ -33,6 +33,7 @@ class SensorReader(BaseService):
         :return:
         :rtype: None
         """
+        self.logger.info("Start SensorReader now...")
         super().start()
 
     async def stop(self, signal=None) -> None:
@@ -43,4 +44,8 @@ class SensorReader(BaseService):
         :return:
         :rtype: None
         """
+        self.logger.info("Receive signal [%s], stop all components now...", signal)
+        await self.signal_manager.send_and_wait(service_stop, sender=self)
+
         await super().stop(signal)
+        self.logger.info("All components are stopped")
