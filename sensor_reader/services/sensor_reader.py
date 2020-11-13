@@ -4,6 +4,8 @@ Sensor Reader
 
 from sensor_reader.base import BaseService
 from sensor_reader.settings import Settings
+from sensor_reader.signals import SignalManager
+from sensor_reader.utils import load_object
 
 
 class SensorReader(BaseService):
@@ -18,6 +20,12 @@ class SensorReader(BaseService):
         :type settings: Settings
         """
         super().__init__(settings)
+
+        self.signal_manager: SignalManager = load_object(
+            settings["CLS_SIGNAL_MANAGER"]
+        ).from_settings(settings)
+
+        self.logger.info("Load SignalManager from [%s]", settings["CLS_SIGNAL_MANAGER"])
 
     def start(self) -> None:
         """
