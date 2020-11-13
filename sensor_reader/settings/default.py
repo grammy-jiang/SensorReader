@@ -13,3 +13,5 @@ LOG_FORMATTER_DATEFMT = "%Y-%m-%d %H:%M:%S"
 # ==== CORE MODULES ===========================================================
 
 LOOP = "uvloop"
+
+CLS_SERVICE = "sensor_reader.services.SensorReader"

@@ -12,6 +12,7 @@ from sensor_reader.utils import (
     configure_event_loop,
     configure_logging,
     get_runtime_info,
+    load_object,
 )
 
 
@@ -99,3 +100,9 @@ def main():
     settings = Settings(settings=args.settings)
     set_logging(settings)
     configure_event_loop(settings)
+
+    cls_service = load_object(settings["CLS_SERVICE"])
+
+    service = cls_service.from_settings(settings)
+
+    service.start()
