@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import asyncio
 import functools
+import pprint
 from collections import UserDict
 from typing import Callable, Set
 
@@ -74,7 +75,13 @@ class SignalManager(UserDict, LoggerMixin):  # pylint: disable=too-many-ancestor
         :rtype: None
         """
         self[signal].add(receiver)
-        self.logger.info("Add receiver [%s] to signal [%s]", receiver, signal)
+        self.logger.info(
+            "Signal [%s] is added a receiver [%s]",
+            signal,
+            f"{receiver.__self__.__class__.__module__}."
+            f"{receiver.__self__.__class__.__name__}."
+            f"{receiver.__name__}",
+        )
 
     def disconnect(self, receiver: Callable, signal: object) -> None:
         """
@@ -108,7 +115,7 @@ class SignalManager(UserDict, LoggerMixin):  # pylint: disable=too-many-ancestor
 
         receiver: Callable
         for receiver in self[signal]:
-            _receiver = functools.partial(receiver, **kwargs)
+            _receiver = functools.partial(receiver, signal=signal, **kwargs)
             if asyncio.iscoroutinefunction(receiver):
                 loop.create_task(_receiver())
             else:
@@ -123,14 +130,27 @@ class SignalManager(UserDict, LoggerMixin):  # pylint: disable=too-many-ancestor
         :return:
         :rtype: None
         """
+        self.logger.info(
+            "Receive a signal [%s], receivers connected:\n%s",
+            signal,
+            pprint.pformat(
+                [
+                    f"{receiver.__self__.__class__.__module__}."
+                    f"{receiver.__self__.__class__.__name__}."
+                    f"{receiver.__name__}"
+                    for receiver in self[signal]
+                ]
+            ),
+        )
+
         tasks = set()
 
         receiver: Callable
         for receiver in self[signal]:
             if asyncio.iscoroutinefunction(receiver):
-                tasks.add(receiver(**kwargs))
+                tasks.add(receiver(signal=signal, **kwargs))
             else:
-                receiver(**kwargs)
+                receiver(signal=signal, **kwargs)
 
         if tasks:
             await asyncio.wait(tasks)
