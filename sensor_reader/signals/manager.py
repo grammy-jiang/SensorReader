@@ -75,7 +75,7 @@ class SignalManager(UserDict, LoggerMixin):  # pylint: disable=too-many-ancestor
         :rtype: None
         """
         self[signal].add(receiver)
-        self.logger.info(
+        self.logger.debug(
             "Signal [%s] is added a receiver [%s]",
             signal,
             f"{receiver.__self__.__class__.__module__}."
@@ -96,7 +96,7 @@ class SignalManager(UserDict, LoggerMixin):  # pylint: disable=too-many-ancestor
         :rtype: None
         """
         self[signal].remove(receiver)
-        self.logger.info("Remove receiver [%s] from signal [%s]", receiver, signal)
+        self.logger.debug("Remove receiver [%s] from signal [%s]", receiver, signal)
 
     def send(self, signal: object, **kwargs) -> None:
         """
@@ -130,7 +130,7 @@ class SignalManager(UserDict, LoggerMixin):  # pylint: disable=too-many-ancestor
         :return:
         :rtype: None
         """
-        self.logger.info(
+        self.logger.debug(
             "Receive a signal [%s], receivers connected:\n%s",
             signal,
             pprint.pformat(
