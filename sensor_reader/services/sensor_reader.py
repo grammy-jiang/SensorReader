@@ -59,18 +59,19 @@ class SensorReaderService(BaseService):
         )
 
         self.logger.info("Start serving now...")
-        self.signal_manager.connect(self._start, service_start)
+        self.signal_manager.connect(self.start_services, service_start)
         self.signal_manager.send(service_start, sender=self)
 
         super().start()
 
-    async def _start(self, signal: Signal, sender) -> None:
+    async def start_services(self, signal: Signal, sender) -> None:
         """
 
         :param signal:
         :param sender:
         :return:
         """
+        await self.channel_manager.start_channels(signal, sender)
 
     async def stop(self, signal=None) -> None:
         """

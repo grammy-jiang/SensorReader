@@ -6,6 +6,7 @@ from functools import cached_property
 from typing import Dict, List
 
 from sensor_reader.base import BaseComponent
+from sensor_reader.signals import Signal
 from sensor_reader.utils import load_object
 
 
@@ -88,3 +89,14 @@ class ChannelManager(BaseComponent):
             ]
 
             self.channels[key] = {"readers": readers, "pipelines": pipelines}
+
+    async def start_channels(self, signal: Signal, sender) -> None:
+        """
+
+        :param signal:
+        :type signal: Signal
+        :param sender:
+        :type sender:
+        :return:
+        :rtype: None
+        """
