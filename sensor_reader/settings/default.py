@@ -15,7 +15,7 @@ LOG_FORMATTER_DATEFMT = "%Y-%m-%d %H:%M:%S"
 
 LOOP = "uvloop"
 
-CLS_SERVICE = "sensor_reader.services.SensorReader"
+CLS_SERVICE = "sensor_reader.services.SensorReaderService"
 
 CLS_SIGNAL_MANAGER = "sensor_reader.signals.SignalManager"
 

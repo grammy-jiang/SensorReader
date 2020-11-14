@@ -18,7 +18,7 @@ from sensor_reader.signals import (
 from sensor_reader.utils import load_object
 
 
-class SensorReader(BaseService):
+class SensorReaderService(BaseService):
     """
     Sensor Reader
     """

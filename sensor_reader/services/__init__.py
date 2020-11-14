@@ -2,8 +2,8 @@
 All service classes
 """
 
-from sensor_reader.services.sensor_reader import SensorReader
+from sensor_reader.services.sensor_reader import SensorReaderService
 
 __all__ = [
-    "SensorReader",
+    "SensorReaderService",
 ]
