@@ -630,4 +630,3 @@ vendor
 
 /docker/dc-postgres/postgres.env
 /docker/dc-postgres/postgres-data
-/docker/dc-postgres/postgres-initdb.d
