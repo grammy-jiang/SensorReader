@@ -32,7 +32,7 @@ class ExtensionManager(ManagerMixin, BaseComponent):
         self._initialize_components()
 
         self.logger.info(
-            "Enabled extensions: \n%s", pprint.pformat(self.cls_extensions)
+            "Enabled extensions:\n%s", pprint.pformat(self.cls_extensions)
         )
 
     @classmethod
