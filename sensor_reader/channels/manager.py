@@ -1,11 +1,14 @@
 """
 Channel Manager
 """
+import asyncio
 import pprint
 from functools import cached_property
 from typing import Dict, List
 
 from sensor_reader.base import BaseComponent
+from sensor_reader.pipelines import PostgreSQLPipeline
+from sensor_reader.readers import SensorHATReader
 from sensor_reader.signals import Signal
 from sensor_reader.utils import load_object
 
@@ -100,3 +103,13 @@ class ChannelManager(BaseComponent):
         :return:
         :rtype: None
         """
+
+        loop = asyncio.get_event_loop()
+
+        for key, value in self.channels.items():
+            reader: SensorHATReader
+            for reader in value["readers"]:
+                loop.create_task(reader.start_reading(signal, sender))
+            pipeline: PostgreSQLPipeline
+            for pipeline in value["pipelines"]:
+                loop.create_task(pipeline.start_piping(signal, sender))
