@@ -21,4 +21,6 @@ CLS_SIGNAL_MANAGER = "sensor_reader.signals.SignalManager"
 
 CLS_EXTENSION_MANAGER = "sensor_reader.extensions.ExtensionManager"
 
-EXTENSIONS: Dict[str, int] = {}
+EXTENSIONS: Dict[str, int] = {
+    "sensor_reader.extensions.Stats": 0,
+}
