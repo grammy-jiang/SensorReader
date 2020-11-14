@@ -111,6 +111,19 @@ class SignalManager(UserDict, LoggerMixin):  # pylint: disable=too-many-ancestor
         :return:
         :rtype: None
         """
+        self.logger.debug(
+            "Receive a signal [%s], receivers connected:\n%s",
+            signal,
+            pprint.pformat(
+                [
+                    f"{receiver.__self__.__class__.__module__}."
+                    f"{receiver.__self__.__class__.__name__}."
+                    f"{receiver.__name__}"
+                    for receiver in self[signal]
+                ]
+            ),
+        )
+
         loop = asyncio.get_event_loop()
 
         receiver: Callable
