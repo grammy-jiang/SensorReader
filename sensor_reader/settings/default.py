@@ -22,5 +22,10 @@ CLS_SIGNAL_MANAGER = "sensor_reader.signals.SignalManager"
 CLS_EXTENSION_MANAGER = "sensor_reader.extensions.ExtensionManager"
 
 EXTENSIONS: Dict[str, int] = {
+    "sensor_reader.extensions.LogStats": 0,
     "sensor_reader.extensions.Stats": 0,
 }
+
+# ==== Extensions =============================================================
+
+LOGSTATS_INTERVAL = 60  # in seconds
