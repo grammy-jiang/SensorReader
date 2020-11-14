@@ -5,7 +5,8 @@ from datetime import datetime
 from functools import cached_property
 
 from sensor_reader.base import BaseService
-from sensor_reader.extensions.manager import ExtensionManager
+from sensor_reader.channels import ChannelManager
+from sensor_reader.extensions import ExtensionManager
 from sensor_reader.settings import Settings
 from sensor_reader.signals import (
     Signal,
@@ -37,6 +38,10 @@ class SensorReaderService(BaseService):
 
         self.extension_manager: ExtensionManager = load_object(
             settings["CLS_EXTENSION_MANAGER"]
+        ).from_service(self)
+
+        self.channel_manager: ChannelManager = load_object(
+            settings["CLS_CHANNEL_MANAGER"]
         ).from_service(self)
 
     def start(self) -> None:
