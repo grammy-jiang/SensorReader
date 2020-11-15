@@ -38,17 +38,11 @@ class PostgreSQLPipeline(BaseComponent):
                 "PostgreSQL [%s:%s] is connected:\n%s", *conn._con._addr, version
             )
 
-    async def start_piping(self, signal: Signal, sender, **kwargs) -> None:
+    async def process_item(self, item) -> None:
         """
 
-        :param signal:
-        :type signal: Signal
-        :param sender:
-        :type sender:
-        :param kwargs:
-        :type kwargs:
+        :param item:
         :return:
-        :rtype: None
         """
         # TODO: receive value and save to database
 
