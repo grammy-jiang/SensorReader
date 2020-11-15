@@ -19,6 +19,7 @@ setup(
     project_urls={},
     packages=find_packages(),
     install_requires=[
+        "aiofile",
         "aiokafka",
         "apscheduler",
         "asyncpg",
