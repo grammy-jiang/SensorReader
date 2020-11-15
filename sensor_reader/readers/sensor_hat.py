@@ -70,7 +70,7 @@ class SensorHATReader(BaseComponent):
         :rtype: Dict
         """
         return {
-            "timestamp": datetime.now().astimezone(self.timezone),
+            "timestamp": datetime.now(self.timezone),
         }
 
     async def get_temperature_from_humidity(self) -> Dict:
@@ -80,7 +80,7 @@ class SensorHATReader(BaseComponent):
         :rtype: Dict
         """
         return {
-            "timestamp": datetime.now().astimezone(self.timezone),
+            "timestamp": datetime.now(self.timezone),
         }
 
     async def get_pressure(self) -> Dict:
@@ -90,7 +90,7 @@ class SensorHATReader(BaseComponent):
         :rtype: Dict
         """
         return {
-            "timestamp": datetime.now().astimezone(self.timezone),
+            "timestamp": datetime.now(self.timezone),
         }
 
     async def get_temperature_from_pressure(self) -> Dict:
@@ -100,5 +100,5 @@ class SensorHATReader(BaseComponent):
         :rtype: Dict
         """
         return {
-            "timestamp": datetime.now().astimezone(self.timezone),
+            "timestamp": datetime.now(self.timezone),
         }
