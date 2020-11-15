@@ -3,12 +3,12 @@ Channel Manager
 """
 import asyncio
 import pprint
-from functools import cached_property
+from functools import cached_property, partial
 from typing import Dict, List
 
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+
 from sensor_reader.base import BaseComponent
-from sensor_reader.pipelines import PostgreSQLPipeline
-from sensor_reader.readers import SensorHATReader
 from sensor_reader.signals import Signal
 from sensor_reader.utils import load_object
 
@@ -39,21 +39,7 @@ class ChannelManager(BaseComponent):
 
         self.logger.info("Enabled channels:\n%s", pprint.pformat(self.cls_channels))
 
-    @classmethod
-    def from_service(cls, service, name: str = None, setting_prefix: str = None):
-        """
-        Initialize components from a service instance
-        :param service:
-        :type service:
-        :param name:
-        :type name: str
-        :param setting_prefix:
-        :type setting_prefix: str
-        :return:
-        """
-        obj = cls(service, name, setting_prefix)
-
-        return obj
+        self.scheduler = AsyncIOScheduler()
 
     @cached_property
     def cls_channels(self) -> Dict[str, Dict[str, List[str]]]:
@@ -93,7 +79,7 @@ class ChannelManager(BaseComponent):
 
             self.channels[key] = {"readers": readers, "pipelines": pipelines}
 
-    async def start_channels(self, signal: Signal, sender) -> None:
+    async def start(self, signal: Signal, sender) -> None:
         """
 
         :param signal:
@@ -104,12 +90,49 @@ class ChannelManager(BaseComponent):
         :rtype: None
         """
 
-        loop = asyncio.get_event_loop()
+        for name, channel in self.channels.items():
+            job = partial(
+                self.process_channel,
+                readers=channel["readers"],
+                pipelines=channel["pipelines"],
+            )
+            self.scheduler.add_job(
+                job,
+                "cron",
+                **self.config["CHANNEL_SENSE_HAT_SCHEDULE"],
+            )
 
-        for key, value in self.channels.items():
-            reader: SensorHATReader
-            for reader in value["readers"]:
-                loop.create_task(reader.start_reading(signal, sender))
-            pipeline: PostgreSQLPipeline
-            for pipeline in value["pipelines"]:
-                loop.create_task(pipeline.start_piping(signal, sender))
+    async def stop(self, signal: Signal, sender):
+        """
+
+        :param signal:
+        :type signal: Signal
+        :param sender:
+        :type sender:
+        :return:
+        :rtype:
+        """
+        self.scheduler.shutdown()
+
+    async def process_channel(self, readers: List, pipelines: List) -> None:
+        """
+
+        :param readers:
+        :type readers: List
+        :param pipelines:
+        :type pipelines: List
+        :return:
+        :rtype: None
+        """
+        results: List = await asyncio.gather(*(reader.read() for reader in readers))
+
+        for pipeline in pipelines:
+            results = await pipeline.process_item(results)
+
+    async def start_channels(self) -> None:
+        """
+
+        :return:
+        :rtype: None
+        """
+        self.scheduler.start()
