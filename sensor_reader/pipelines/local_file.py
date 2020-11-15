@@ -3,7 +3,7 @@ Pipeline of saving data to PostgreSQL
 """
 import pprint
 
-from aiofile import BinaryFileWrapper, async_open
+import aiofiles
 
 from sensor_reader.base import BaseComponent
 from sensor_reader.signals import Signal
@@ -17,7 +17,7 @@ class LocalFilePipeline(BaseComponent):
     name = "LocalFilePipeline"
     setting_prefix = "LOCAL_FILE_PIPELINE_"
 
-    file: BinaryFileWrapper
+    file: aiofiles.threadpool.text.AsyncTextIOWrapper
 
     async def start(self, signal: Signal, sender) -> None:
         """
@@ -29,7 +29,7 @@ class LocalFilePipeline(BaseComponent):
         :return:
         :rtype: None
         """
-        self.file = async_open(self.config["FILE"], "w")
+        self.file = await aiofiles.open(self.config["FILE"], "w")
 
     async def process_item(self, item):
         """
@@ -37,7 +37,7 @@ class LocalFilePipeline(BaseComponent):
         :param item:
         :return:
         """
-        await self.file.write(pprint.pformat(item))
+        await self.file.write(f"{pprint.pformat(item)}\n")
         return item
 
     async def stop(self, signal: Signal, sender) -> None:
