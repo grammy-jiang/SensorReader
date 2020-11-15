@@ -1,7 +1,9 @@
 """
 Pipeline of saving data to PostgreSQL
 """
-from aiofile import async_open, BinaryFileWrapper
+import pprint
+
+from aiofile import BinaryFileWrapper, async_open
 
 from sensor_reader.base import BaseComponent
 from sensor_reader.signals import Signal
@@ -35,7 +37,7 @@ class LocalFilePipeline(BaseComponent):
         :param item:
         :return:
         """
-        await self.file.write(item)
+        await self.file.write(pprint.pformat(item).encode())
         return item
 
     async def stop(self, signal: Signal, sender) -> None:
