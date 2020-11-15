@@ -39,6 +39,7 @@ CHANNELS: Dict[str, Dict] = {
         ],
         "pipelines": [
             "sensor_reader.pipelines.PostgreSQLPipeline",
+            "sensor_reader.pipelines.LocalFilePipeline",
         ],
     },
 }
@@ -58,3 +59,5 @@ POSTGRESQL_PIPELINE_POSTGRESQL_URL = (
     f"{postgres_host}:{postgres_port}/"
     f"{postgres_database}"
 )
+
+LOCAL_FILE_PIPELINE_FILE = "sense-hat_records.txt"
