@@ -9,7 +9,6 @@ from sensor_reader.channels import ChannelManager
 from sensor_reader.extensions import ExtensionManager
 from sensor_reader.settings import Settings
 from sensor_reader.signals import (
-    Signal,
     SignalManager,
     component_start,
     component_stop,
@@ -59,19 +58,17 @@ class SensorReaderService(BaseService):
         )
 
         self.logger.info("Start serving now...")
-        self.signal_manager.connect(self.start_services, service_start)
-        self.signal_manager.send(service_start, sender=self)
-
+        self.loop.create_task(self.start_services())
         super().start()
 
-    async def start_services(self, signal: Signal, sender) -> None:
+    async def start_services(self) -> None:
         """
 
-        :param signal:
-        :param sender:
         :return:
+        :rtype: None
         """
-        await self.channel_manager.start_channels(signal, sender)
+        self.signal_manager.send(service_start, sender=self)
+        await self.channel_manager.start_channels()
 
     async def stop(self, signal=None) -> None:
         """
