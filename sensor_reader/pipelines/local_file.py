@@ -37,7 +37,7 @@ class LocalFilePipeline(BaseComponent):
         :param item:
         :return:
         """
-        await self.file.write(pprint.pformat(item).encode())
+        await self.file.write(pprint.pformat(item))
         return item
 
     async def stop(self, signal: Signal, sender) -> None:
