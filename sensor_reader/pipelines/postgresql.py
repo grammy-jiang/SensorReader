@@ -38,13 +38,14 @@ class PostgreSQLPipeline(BaseComponent):
                 "PostgreSQL [%s:%s] is connected:\n%s", *conn._con._addr, version
             )
 
-    async def process_item(self, item) -> None:
+    async def process_item(self, item):
         """
 
         :param item:
         :return:
         """
         # TODO: receive value and save to database
+        return item
 
     async def stop(self, signal: Signal, sender) -> None:
         """

@@ -29,13 +29,14 @@ class LocalFilePipeline(BaseComponent):
         """
         self.file = async_open(self.config["FILE"], "w")
 
-    async def process_item(self, item) -> None:
+    async def process_item(self, item):
         """
 
         :param item:
         :return:
         """
         await self.file.write(item)
+        return item
 
     async def stop(self, signal: Signal, sender) -> None:
         """
