@@ -126,6 +126,10 @@ class ChannelManager(BaseComponent):
         """
         results: List = await asyncio.gather(*(reader.read() for reader in readers))
 
+        self.logger.info(
+            "From readers get the following results:\n%s", pprint.pformat(results)
+        )
+
         for pipeline in pipelines:
             results = await pipeline.process_item(results)
 
