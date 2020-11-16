@@ -24,6 +24,7 @@ setup(
         "apscheduler",
         "asyncpg",
         "cachetools",
+        "motor",
         "sense-hat",
         "uvloop",
     ],

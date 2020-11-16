@@ -23,6 +23,7 @@ aiokafka = "*"
 apscheduler = "*"
 asyncpg = "*"
 cachetools = "*"
+motor = "*"
 sense-hat = "*"
 uvloop = "*"
 
