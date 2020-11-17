@@ -79,6 +79,8 @@ class SensorHATReader(BaseComponent):
             "humidity": {
                 "timestamp": datetime.now(self.timezone),
                 "value": 0,
+                "unit": "%",
+                "comment": "The percentage of relative humidity from the humidity sensor",
             }
         }
 
@@ -92,6 +94,8 @@ class SensorHATReader(BaseComponent):
             "temperature_from_humidity": {
                 "timestamp": datetime.now(self.timezone),
                 "value": 0,
+                "unit": "Celsius",
+                "comment": "The current temperature in degrees Celsius from the humidity sensor",
             }
         }
 
@@ -105,6 +109,8 @@ class SensorHATReader(BaseComponent):
             "pressure": {
                 "timestamp": datetime.now(self.timezone),
                 "value": 0,
+                "unit": "Millibars",
+                "comment": "The current pressure in Millibars from the pressure sensor",
             }
         }
 
@@ -118,5 +124,7 @@ class SensorHATReader(BaseComponent):
             "temperature_from_pressure": {
                 "timestamp": datetime.now(self.timezone),
                 "value": 0,
+                "unit": "Celsius",
+                "comment": "The current temperature in degrees Celsius from the pressure sensor",
             }
         }
