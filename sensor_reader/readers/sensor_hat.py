@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import asyncio
 from datetime import datetime, timedelta, timezone
-from typing import Dict, Tuple
+from typing import Dict, Union
 
 from sensor_reader.base import BaseComponent
 
@@ -69,62 +69,62 @@ class SensorHATReader(BaseComponent):
             "result": result,
         }
 
-    async def get_humidity(self) -> Dict:
+    async def get_humidity(self) -> Dict[str, Dict[str, Union[datetime, float]]]:
         """
+        Gets the percentage of relative humidity from the humidity sensor.
 
         :return:
-        :rtype: Dict
+        :rtype: Dict[str, Dict[str, Union[datetime, float]]]
         """
         return {
             "humidity": {
                 "timestamp": datetime.now(self.timezone),
                 "value": 0,
-                "unit": "%",
-                "comment": "The percentage of relative humidity from the humidity sensor",
             }
         }
 
-    async def get_temperature_from_humidity(self) -> Dict:
+    async def get_temperature_from_humidity(
+        self,
+    ) -> Dict[str, Dict[str, Union[datetime, float]]]:
         """
+        Gets the current temperature in degrees Celsius from the humidity sensor.
 
         :return:
-        :rtype: Dict
+        :rtype: Dict[str, Dict[str, Union[datetime, float]]]
         """
         return {
             "temperature_from_humidity": {
                 "timestamp": datetime.now(self.timezone),
                 "value": 0,
-                "unit": "Celsius",
-                "comment": "The current temperature in degrees Celsius from the humidity sensor",
             }
         }
 
-    async def get_pressure(self) -> Dict:
+    async def get_pressure(self) -> Dict[str, Dict[str, Union[datetime, float]]]:
         """
+        Gets the current pressure in Millibars from the pressure sensor.
 
         :return:
-        :rtype: Dict
+        :rtype: Dict[str, Dict[str, Union[datetime, float]]]
         """
         return {
             "pressure": {
                 "timestamp": datetime.now(self.timezone),
                 "value": 0,
-                "unit": "Millibars",
-                "comment": "The current pressure in Millibars from the pressure sensor",
             }
         }
 
-    async def get_temperature_from_pressure(self) -> Dict:
+    async def get_temperature_from_pressure(
+        self,
+    ) -> Dict[str, Dict[str, Union[datetime, float]]]:
         """
+        Gets the current temperature in degrees Celsius from the pressure sensor.
 
         :return:
-        :rtype: Dict
+        :rtype: Dict[str, Dict[str, Union[datetime, float]]]
         """
         return {
             "temperature_from_pressure": {
                 "timestamp": datetime.now(self.timezone),
                 "value": 0,
-                "unit": "Celsius",
-                "comment": "The current temperature in degrees Celsius from the pressure sensor",
             }
         }
