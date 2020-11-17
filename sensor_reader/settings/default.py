@@ -38,6 +38,7 @@ CHANNELS: Dict[str, Dict] = {
             "sensor_reader.readers.SensorHATReader",
         ],
         "pipelines": [
+            "sensor_reader.pipelines.MongoDBPipeline",
             "sensor_reader.pipelines.PostgreSQLPipeline",
             "sensor_reader.pipelines.LocalFilePipeline",
         ],
@@ -48,16 +49,28 @@ CHANNELS_MANAGER_CHANNEL_SENSE_HAT_SCHEDULE: Dict[str, str] = {
     "second": "*",
 }
 
-postgres_user = "user"
-postgres_password = "password"
-postgres_host = "host"
-postgres_port = "post"
-postgres_database = "db"
+POSTGRESQL_PIPELINE_POSTGRES_USER = "sense-hat"
+POSTGRESQL_PIPELINE_POSTGRES_PASSWORD = "password"
+POSTGRESQL_PIPELINE_POSTGRES_HOST = "192.168.1.115"
+POSTGRESQL_PIPELINE_POSTGRES_PORT = 55432
+POSTGRESQL_PIPELINE_POSTGRES_DATABASE = "sense-hat"
 POSTGRESQL_PIPELINE_POSTGRESQL_URL = (
     f"postgres://"
-    f"{postgres_user}:{postgres_password}@"
-    f"{postgres_host}:{postgres_port}/"
-    f"{postgres_database}"
+    f"{POSTGRESQL_PIPELINE_POSTGRES_USER}:{POSTGRESQL_PIPELINE_POSTGRES_PASSWORD}@"
+    f"{POSTGRESQL_PIPELINE_POSTGRES_HOST}:{POSTGRESQL_PIPELINE_POSTGRES_PORT}/"
+    f"{POSTGRESQL_PIPELINE_POSTGRES_DATABASE}"
 )
 
 LOCAL_FILE_PIPELINE_FILE = "sense-hat_records.txt"
+
+MONGODB_PIPELINE_MONGODB_USER = "sense-hat"
+MONGODB_PIPELINE_MONGODB_PASSWORD = "password"
+MONGODB_PIPELINE_MONGODB_HOST = "192.168.1.115"
+MONGODB_PIPELINE_MONGODB_PORT = 27017
+MONGODB_PIPELINE_MONGODB_DATABASE = "sense-hat"
+MONGODB_PIPELINE_MONGODB_URL = (
+    f"mongodb://"
+    f"{MONGODB_PIPELINE_MONGODB_USER}:{MONGODB_PIPELINE_MONGODB_PASSWORD}@"
+    f"{MONGODB_PIPELINE_MONGODB_HOST}:{MONGODB_PIPELINE_MONGODB_PORT}/"
+    f"{MONGODB_PIPELINE_MONGODB_DATABASE}"
+)
