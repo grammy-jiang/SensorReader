@@ -3,7 +3,11 @@ Pipeline of saving data to MongoDB
 """
 import pprint
 
-from motor.motor_asyncio import AsyncIOMotorClient
+from motor.motor_asyncio import (
+    AsyncIOMotorClient,
+    AsyncIOMotorCollection,
+    AsyncIOMotorDatabase,
+)
 
 from sensor_reader.base import BaseComponent
 from sensor_reader.signals import Signal
@@ -18,6 +22,8 @@ class MongoDBPipeline(BaseComponent):
     setting_prefix = "MONGODB_PIPELINE_"
 
     client: AsyncIOMotorClient
+    db: AsyncIOMotorDatabase
+    collection: AsyncIOMotorCollection
 
     async def start(self, signal: Signal, sender) -> None:
         """
@@ -41,13 +47,16 @@ class MongoDBPipeline(BaseComponent):
             pprint.pformat(server_info),
         )
 
+        self.db = self.client.get_database(self.config["MONGODB_DATABASE"])
+        self.collection = self.db[self.config["MONGODB_COLLECTION"]]
+
     async def process_item(self, item):
         """
 
         :param item:
         :return:
         """
-        # TODO: receive value and save to database
+        await self.collection.insert_many(item)
         return item
 
     async def stop(self, signal: Signal, sender) -> None:
