@@ -34,6 +34,7 @@ class ChannelManager(BaseComponent):
         """
         super().__init__(service, name, setting_prefix)
 
+        self.stats = service.stats
         self.channels: Dict = {}
         self._initialize_channels()
 
@@ -125,7 +126,7 @@ class ChannelManager(BaseComponent):
         :rtype: None
         """
         results: List = await asyncio.gather(*(reader.read() for reader in readers))
-
+        self.stats.increase("items")
         self.logger.debug(
             "From readers get the following results:\n%s", pprint.pformat(results)
         )
