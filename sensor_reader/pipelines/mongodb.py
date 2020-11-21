@@ -3,6 +3,7 @@ Pipeline of saving data to MongoDB
 """
 import pprint
 
+from bson.objectid import ObjectId
 from motor.motor_asyncio import (
     AsyncIOMotorClient,
     AsyncIOMotorCollection,
@@ -56,7 +57,11 @@ class MongoDBPipeline(BaseComponent):
         :param item:
         :return:
         """
-        await self.collection.insert_many(item)
+        _item = [
+            {"_id": ObjectId.from_datetime(item_["timestamp"]), **item_}
+            for item_ in item
+        ]
+        await self.collection.insert_many(_item)
         return item
 
     async def stop(self, signal: Signal, sender) -> None:
