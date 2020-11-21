@@ -30,6 +30,7 @@ class SensorHATReader(BaseComponent):
         """
         super().__init__(service, name, setting_prefix)
 
+        self.stats = service.stats
         self.timezone = datetime.now(timezone(timedelta(0))).astimezone().tzinfo
 
     @classmethod
@@ -77,7 +78,9 @@ class SensorHATReader(BaseComponent):
         :return:
         :rtype: Dict[str, float]
         """
-        return {"humidity": 0}
+        humidity = 0
+        self.stats.increase("reader/humidity")
+        return {"humidity": humidity}
 
     async def get_temperature_from_humidity(self) -> Dict[str, float]:
         """
@@ -86,7 +89,9 @@ class SensorHATReader(BaseComponent):
         :return:
         :rtype: Dict[str, float]
         """
-        return {"temperature_from_humidity": 0}
+        temperature = 0
+        self.stats.increase("reader/temperature_from_humidity")
+        return {"temperature_from_humidity": temperature}
 
     async def get_pressure(self) -> Dict[str, float]:
         """
@@ -95,7 +100,9 @@ class SensorHATReader(BaseComponent):
         :return:
         :rtype: Dict[str, Dict[str, float]
         """
-        return {"pressure": 0}
+        pressure = 0
+        self.stats.increase("reader/pressure")
+        return {"pressure": pressure}
 
     async def get_temperature_from_pressure(self) -> Dict[str, float]:
         """
@@ -104,4 +111,6 @@ class SensorHATReader(BaseComponent):
         :return:
         :rtype: Dict[str, float]
         """
-        return {"temperature_from_pressure": 0}
+        temperature = 0
+        self.stats.increase("reader/temperature_from_pressure")
+        return {"temperature_from_pressure": temperature}
