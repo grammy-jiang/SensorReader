@@ -3,7 +3,6 @@ Pipeline of saving data to MongoDB
 """
 import pprint
 
-from bson.objectid import ObjectId
 from motor.motor_asyncio import (
     AsyncIOMotorClient,
     AsyncIOMotorCollection,
