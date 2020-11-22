@@ -57,11 +57,7 @@ class MongoDBPipeline(BaseComponent):
         :param item:
         :return:
         """
-        _item = [
-            {"_id": ObjectId.from_datetime(item_["timestamp"]), **item_}
-            for item_ in item
-        ]
-        await self.collection.insert_many(_item)
+        await self.collection.insert_many(item)
         return item
 
     async def stop(self, signal: Signal, sender) -> None:
