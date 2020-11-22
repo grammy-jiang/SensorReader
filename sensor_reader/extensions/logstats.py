@@ -1,7 +1,8 @@
 """
 LogStats
 """
-from asyncio.events import TimerHandle, get_event_loop
+from asyncio.events import TimerHandle
+from functools import cached_property
 
 from sensor_reader.base import BaseComponent
 from sensor_reader.signals import Signal
@@ -16,6 +17,26 @@ class LogStats(BaseComponent):
     setting_prefix: str = "LOGSTATS_"
 
     timer_handle: TimerHandle
+
+    def __init__(self, service, name: str = None, setting_prefix: str = None):
+        """
+
+        :param service:
+        :type service:
+        :param name:
+        :type name: str
+        :param setting_prefix:
+        :type setting_prefix: str
+        """
+        super().__init__(service, name, setting_prefix)
+
+        self.loop = service.loop
+
+        self._no_read: int = 0  # number of read
+
+    @cached_property
+    def stats(self):
+        return self.service.stats
 
     async def start(self, signal: Signal, sender) -> None:
         """
@@ -50,5 +71,11 @@ class LogStats(BaseComponent):
         """
         # TODO: add the log message
 
-        loop = get_event_loop()
-        self.timer_handle = loop.call_later(self.config["INTERVAL"], self.log)
+        self.logger.info(
+            "Item read: [%s/%s]",
+            self.stats["items"] - self._no_read,
+            self.stats["items"],
+        )
+        self._no_read = self.stats["items"]
+
+        self.timer_handle = self.loop.call_later(self.config["INTERVAL"], self.log)
