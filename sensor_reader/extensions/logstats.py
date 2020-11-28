@@ -69,8 +69,6 @@ class LogStats(BaseComponent):
         :return:
         :rtype: None
         """
-        # TODO: add the log message
-
         self.logger.info(
             "Item read: [%s/%s]",
             self.stats["items"] - self._no_read,
@@ -78,4 +76,6 @@ class LogStats(BaseComponent):
         )
         self._no_read = self.stats["items"]
 
-        self.timer_handle = self.loop.call_later(self.config["INTERVAL"], self.log)
+        self.timer_handle = self.loop.call_later(
+            self.config["INTERVAL"], self.log
+        )
