@@ -7,7 +7,7 @@ import asyncio
 from signal import SIGHUP, SIGINT, SIGQUIT, SIGTERM
 
 from sensor_reader.settings import Settings
-from sensor_reader.utils import LoggerMixin
+from sensor_reader.utils import LoggerMixin, configure_event_loop
 
 
 class BaseService(LoggerMixin):
@@ -22,6 +22,7 @@ class BaseService(LoggerMixin):
         :type settings: Settings
         """
         self.settings = settings
+        configure_event_loop(self.settings)
         self.loop = asyncio.get_event_loop()
 
         signals = (SIGHUP, SIGQUIT, SIGTERM, SIGINT)
