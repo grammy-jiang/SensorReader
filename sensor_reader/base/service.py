@@ -4,13 +4,14 @@ Base class of Service
 from __future__ import annotations
 
 import asyncio
+from abc import ABCMeta, abstractmethod
 from signal import SIGHUP, SIGINT, SIGQUIT, SIGTERM
 
 from sensor_reader.settings import Settings
 from sensor_reader.utils import LoggerMixin, configure_event_loop
 
 
-class BaseService(LoggerMixin):
+class BaseService(LoggerMixin, metaclass=ABCMeta):
     """
     Base class of Service
     """
@@ -43,7 +44,6 @@ class BaseService(LoggerMixin):
         :rtype: BaseService
         """
         obj = cls(settings)
-
         return obj
 
     def start(self) -> None:
@@ -53,14 +53,29 @@ class BaseService(LoggerMixin):
         :rtype None
         """
         self.loop.run_forever()
-        self.loop.close()
 
-    async def stop(self, signal=None) -> None:  # pylint: disable=unused-argument
+    @abstractmethod
+    async def start_serving(self) -> None:
+        """
+
+        :return:
+        :rtype: None
+        """
+
+    async def stop(self, signal: int = None) -> None:  # pylint: disable=unused-argument
         """
 
         :param signal:
-        :type signal:
+        :type signal: int
         :return:
         :rtype: None
         """
         self.loop.stop()
+
+    def close(self) -> None:
+        """
+
+        :return:
+        :rtype: None
+        """
+        self.loop.close()

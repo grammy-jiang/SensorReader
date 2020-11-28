@@ -58,10 +58,10 @@ class SensorReaderService(BaseService):
         )
 
         self.logger.info("Start serving now...")
-        self.loop.create_task(self.start_services())
+        self.loop.create_task(self.start_serving())
         super().start()
 
-    async def start_services(self) -> None:
+    async def start_serving(self) -> None:
         """
 
         :return:
