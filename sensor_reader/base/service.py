@@ -52,6 +52,7 @@ class BaseService(LoggerMixin, metaclass=ABCMeta):
         :return:
         :rtype None
         """
+        self.loop.create_task(self.start_serving())
         self.loop.run_forever()
 
     @abstractmethod
