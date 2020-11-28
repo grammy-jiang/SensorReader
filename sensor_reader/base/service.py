@@ -24,7 +24,13 @@ class BaseService(LoggerMixin):
         self.settings = settings
         self.loop = asyncio.get_event_loop()
 
-        self._register_stop_signals_to_loop()
+        signals = (SIGHUP, SIGQUIT, SIGTERM, SIGINT)
+
+        for signal in signals:
+            self.loop.add_signal_handler(
+                signal,
+                lambda s=signal: asyncio.create_task(self.stop(s)),
+            )
 
     @classmethod
     def from_settings(cls, settings: Settings) -> BaseService:
@@ -57,18 +63,3 @@ class BaseService(LoggerMixin):
         :rtype: None
         """
         self.loop.stop()
-
-    def _register_stop_signals_to_loop(self) -> None:
-        """
-
-        :return:
-        :rtype: None
-        """
-
-        signals = (SIGHUP, SIGQUIT, SIGTERM, SIGINT)
-
-        for signal in signals:
-            self.loop.add_signal_handler(
-                signal,
-                lambda s=signal: asyncio.create_task(self.stop(s)),
-            )
